@@ -10,8 +10,9 @@ int main (int argc, char *argv[]) {
   ssize_t linelen;
   while(1) {
     printf("wish> ");
-    linelen = getline(&line, &linecap, stdin);
+    if((linelen = getline(&line, &linecap, stdin)) > 0) {
     fwrite(line, linelen, 1, stdout);
+    }
     }
   return 0;
 }
