@@ -2,17 +2,16 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+// first: 'ls' with no arguments
+
 int main (int argc, char *argv[]) {
-  printf("hello world (pid: %d)\n", (int) getpid());
-  int rc = fork();
-  if(rc < 0) {
-    fprintf(stderr, "fork failed\n");
-    exit(1);
-  } else if(rc == 0) {
-    printf("hello, I am child(pid: %d)\n", (int) getpid());
-  } else {
-    wait(NULL);
-    printf("hello, I am parent of %d (pid:%d)\n", rc, (int) getpid());
-  }  
+  char *line = NULL;
+  size_t linecap = 0;
+  ssize_t linelen;
+  while(1) {
+    printf("wish> ");
+    linelen = getline(&line, &linecap, stdin);
+    fwrite(line, linelen, 1, stdout);
+    }
   return 0;
 }
