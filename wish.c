@@ -13,7 +13,7 @@ int main (int argc, char *argv[]) {
     printf("wish> ");
     if((linelen = getline(&line, &linecap, stdin)) > 0) {
       if(strcmp(line, "exit\n") == 0) {
-        break;
+        exit(0);
       } else {
         fwrite(line, linelen, 1, stdout);
         line = NULL;
