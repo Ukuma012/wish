@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// first: 'ls' with no arguments
 
 int main (int argc, char *argv[]) {
   char *line = NULL;
