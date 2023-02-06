@@ -21,3 +21,4 @@ tags
 # Output files
 wish
 a.out
+*.dSYM
