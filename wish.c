@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 int main (int argc, char *argv[]) {
   char *line = NULL;
   size_t linecap = 0;
