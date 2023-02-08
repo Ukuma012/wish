@@ -16,9 +16,17 @@ int main (int argc, char *argv[]) {
       } 
       int rc = fork();
       if(rc < 0) {
-	fprintf(stderr, "fork failed");
+	fprintf(stderr, "fork failed\n");
 	exit(1);
       }else if(rc == 0) {
+      	// ここでコマンドを実行
+	char *myargs[3];
+	myargs[0] = strdup(".");
+	myargs[1] = NULL;
+	if((execv("/bin/ls", myargs)) < 0) {
+	  fprintf(stderr, "execv failed\n");
+	  exit(1);
+	};
 	fwrite(line, linelen, 1, stdout);
 	exit(0);
       } else {
