@@ -19,18 +19,26 @@ int main (int argc, char *argv[]) {
 	fprintf(stderr, "fork failed\n");
 	exit(1);
       }else if(rc == 0) {
-      	// ここでコマンドを実行
+	// ここでコマンドを実行
+	// /bin/lsが引数を取らない場合、後にスペースが必要になっている
+	// /bin/ls ./testsは成功
+	char *string;
 	char *myargs[3];
-	myargs[0] = strdup(".");
-	myargs[1] = NULL;
-	if((execv("/bin/ls", myargs)) < 0) {
-	  fprintf(stderr, "execv failed\n");
-	  exit(1);
-	};
-	fwrite(line, linelen, 1, stdout);
+	int i = 0;
+	while((string = strsep(&line, " ")) != NULL) {
+	  myargs[i] = string;
+	  i++;
+	}
+	//myargs[1] = "./tests";
+	myargs[2] = NULL;
+	printf("%s", myargs[0]);
+	if((execv(myargs[0], myargs)) < 0) {
+		fprintf(stderr, "execv failed\n");
+		exit(1);
+	}
 	exit(0);
       } else {
-      	wait(NULL);
+	wait(NULL);
       }
     }
   }
