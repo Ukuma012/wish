@@ -20,24 +20,29 @@ int main (int argc, char *argv[]) {
       }
       if(strcmp(line, "exit") == 0) {
 	exit(0);
-      } 
+      }
       int rc = fork();
       if(rc < 0) {
 	fprintf(stderr, "fork failed\n");
 	exit(1);
       }else if(rc == 0) {
-        // cat wish.cのような感じで動くようになった
-	// 動的なargs配列確保をすれば良い？
-
 	char *args[3];
 	char dst[20];
 	char *string;
 	int i = 0;
 	while((string = strsep(&line, " ")) != NULL) {
-		args[i] = string;
-		i++;
+	  args[i] = string;
+	  i++;
 	}
 	args[i] = NULL;
+
+	if(strcmp(args[0], "cd") == 0) {
+	  if(chdir(args[1]) < 0) {
+	    fprintf(stderr, "cd failed!\n");
+	    exit(1);
+	  }
+	  exit(0);
+	}
 
 	snprintf(dst, sizeof(dst), "/bin/%s", args[0]);
 	if((access(dst, X_OK)) < 0) {
@@ -47,6 +52,7 @@ int main (int argc, char *argv[]) {
 	    printf("cannot access /usr/bin/\n");
 	  }
 	}
+
 	if((execv(dst, args)) < 0) {
 	  printf("%s\n", dst);
 	  fprintf(stderr, "execv failed\n");
