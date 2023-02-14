@@ -1,5 +1,5 @@
 
 FLAGS = -Wall -g
 
-wish: wish.c
-	gcc -o wish wish.c $(FLAGS)
+wish: wish_parse.c
+	gcc -o wish wish_parse.c $(FLAGS)
