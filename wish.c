@@ -7,7 +7,6 @@ int main (int argc, char *argv[]) {
   char *line = NULL;
   size_t linecap = 0;
   ssize_t linelen;
-  char error_message[30] = "An error has occurred\n";
 
   while(1) {
     printf("%s", "wish> ");
