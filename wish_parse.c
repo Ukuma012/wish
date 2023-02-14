@@ -6,8 +6,6 @@
 char *get(char *, int);
 int getcmd(char *, int);
 
-// testcommand\0
-
 char *get(char *buf, int max) {
   int c, i;
   for(i = 0; i+1 < max; ) {
@@ -23,6 +21,7 @@ char *get(char *buf, int max) {
 }
 
 int getcmd(char *buf, int nbuf) {
+  // @TODO 今自分がどこにいるのか表示
   printf("%s", "wish> ");
   get(buf, nbuf);
   if(buf[0] == 0)
