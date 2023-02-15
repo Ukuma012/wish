@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #define BUFSIZE 100
 
@@ -32,15 +33,21 @@ int getcmd(char *buf, int nbuf) {
 int main(int argc, char *argv[]) {
   char buf[BUFSIZE];
   while(getcmd(buf, sizeof(buf)) >= 0) {
-    if(buf[0] == 'e' && buf[1] == 'x' && buf[2] == 'i' && buf[3] == 't') {
+    if(buf[0] == 'e' && buf[1] == 'x' && buf[2] == 'i' && buf[3] == 't') 
       exit(0);
+    
+    int rc = fork();
+    if(rc < 0) {
+      fprintf(stderr, "fork failed\n");
+      exit(1);
+    } else if(rc == 0) {
+      // @TODO parse & runcmd
+      printf("Hi! I am child\n");
+      exit(0);
+    } else {
+      wait(NULL);
+      printf("Hi! I am parent\n");
     }
-    for(int j = 0; j < BUFSIZE; j++) {
-      if(buf[j] == '\0') 
-        break;
-      printf("%c", buf[j]);
-    }
-    printf("\n");
   }
   return 0;
 }
