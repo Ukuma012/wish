@@ -45,10 +45,9 @@ int main (int argc, char *argv[]) {
 
         snprintf(dst, sizeof(dst), "/bin/%s", args[0]);
         if((access(dst, X_OK)) < 0) {
-          printf("cannot access /bin/\n");
           snprintf(dst, sizeof(dst), "/usr/bin/%s", args[0]);
           if((access(dst, X_OK)) < 0) {
-            printf("cannot access /usr/bin/\n");
+            printf("cannot access\n");
           }
         }
 
