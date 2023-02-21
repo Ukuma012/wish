@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+// @TODO access system call
+// @TODO redirection
+// 処理を関数にまとめる
+
 int main (int argc, char *argv[]) {
   char *line = NULL;
   size_t linecap = 0;
