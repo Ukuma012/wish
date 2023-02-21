@@ -9,6 +9,9 @@ int main (int argc, char *argv[]) {
   ssize_t linelen;
 
   while(1) {
+    char *args[10];
+    char *string;
+    int i = 0;
     printf("%s", "wish> ");
     if((linelen = getline(&line, &linecap, stdin)) > 0) {
       // 末尾の改行を終端に変更
@@ -17,42 +20,27 @@ int main (int argc, char *argv[]) {
       if(p != NULL) {
         *p = '\0';
       }
-      if(strcmp(line, "exit") == 0) {
+
+      while((string = strsep(&line, " ")) != NULL) {
+        if(*string == '\0') {
+          continue;
+        }
+        args[i] = string;
+        i++;
+      }
+      args[i] = NULL;
+
+      if(strcmp(args[0], "exit") == 0) {
         exit(0);
       }
+
       int rc = fork();
       if(rc < 0) {
         fprintf(stderr, "fork failed\n");
         exit(1);
       }else if(rc == 0) {
-        char *args[3];
-        char dst[20];
-        char *string;
-        int i = 0;
-        while((string = strsep(&line, " ")) != NULL) {
-          args[i] = string;
-          i++;
-        }
-        args[i] = NULL;
-
-        if(strcmp(args[0], "cd") == 0) {
-          if(chdir(args[1]) < 0) {
-            fprintf(stderr, "cd failed!\n");
-            exit(1);
-          }
-          exit(0);
-        }
-
-        snprintf(dst, sizeof(dst), "/bin/%s", args[0]);
-        if((access(dst, X_OK)) < 0) {
-          snprintf(dst, sizeof(dst), "/usr/bin/%s", args[0]);
-          if((access(dst, X_OK)) < 0) {
-            printf("cannot access\n");
-          }
-        }
-
-        if((execv(dst, args)) < 0) {
-          printf("%s\n", dst);
+        if((execv(args[0], args)) < 0) {
+          printf("%s\n", args[0]);
           fprintf(stderr, "execv failed\n");
           exit(1);
         }
