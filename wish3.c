@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
           snprintf(cmd, sizeof(cmd), "/usr/bin/%s", args[0]);
           if ((access(cmd, X_OK)) < 0)
           {
-            printf("%s", cmd);
             fprintf(stderr, "command not found\n");
             exit(1);
           }
