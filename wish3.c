@@ -11,6 +11,7 @@ int main (int argc, char *argv[]) {
   char *line = NULL;
   size_t linecap = 0;
   ssize_t linelen;
+  char *whitespace = " \t";
 
   while(1) {
     char *args[10];
@@ -25,7 +26,7 @@ int main (int argc, char *argv[]) {
         *p = '\0';
       }
 
-      while((string = strsep(&line, " ")) != NULL) {
+      while((string = strsep(&line, whitespace)) != NULL) {
         if(*string == '\0') {
           continue;
         }
