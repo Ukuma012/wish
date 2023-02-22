@@ -5,7 +5,9 @@
 
 // @TODO access system call
 // @TODO redirection
-// 処理を関数にまとめる
+// @TODO promptの前にpathを表示する
+// @TODO GUI
+// @TODO 処理を関数にまとめる
 
 int main (int argc, char *argv[]) {
   char *line = NULL;
