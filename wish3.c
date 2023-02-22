@@ -9,27 +9,33 @@
 // @TODO GUI
 // @TODO 処理を関数にまとめる
 
-int main (int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
   char *line = NULL;
   size_t linecap = 0;
   ssize_t linelen;
   char *whitespace = " \t";
 
-  while(1) {
+  while (1)
+  {
     char *args[10];
     char *string;
     int i = 0;
     printf("%s", "wish> ");
-    if((linelen = getline(&line, &linecap, stdin)) > 0) {
+    if ((linelen = getline(&line, &linecap, stdin)) > 0)
+    {
       // 末尾の改行を終端に変更
       char *p;
       p = strchr(line, '\n');
-      if(p != NULL) {
+      if (p != NULL)
+      {
         *p = '\0';
       }
 
-      while((string = strsep(&line, whitespace)) != NULL) {
-        if(*string == '\0') {
+      while ((string = strsep(&line, whitespace)) != NULL)
+      {
+        if (*string == '\0')
+        {
           continue;
         }
         args[i] = string;
@@ -37,22 +43,42 @@ int main (int argc, char *argv[]) {
       }
       args[i] = NULL;
 
-      if(strcmp(args[0], "exit") == 0) {
+      if (strcmp(args[0], "exit") == 0)
+      {
         exit(0);
       }
 
       int rc = fork();
-      if(rc < 0) {
+      if (rc < 0)
+      {
         fprintf(stderr, "fork failed\n");
         exit(1);
-      }else if(rc == 0) {
-        if((execv(args[0], args)) < 0) {
+      }
+      else if (rc == 0)
+      {
+        // @Fix me command not foundが表示されない
+        char cmd[10];
+        snprintf(cmd, sizeof(cmd), "/bin/%s", args[0]);
+        if ((access(cmd, X_OK)) < 0)
+        {
+          snprintf(cmd, sizeof(cmd), "/usr/bin/%s", args[0]);
+          if ((access(cmd, X_OK)) < 0)
+          {
+            fprintf(stderr, "command not found\n");
+            exit(0);
+          }
+        }
+
+        if ((execv(cmd, args)) < 0)
+        {
           printf("%s\n", args[0]);
           fprintf(stderr, "execv failed\n");
           exit(1);
         }
         exit(0);
-      } else {
+      }
+      else
+      {
         wait(NULL);
       }
     }
