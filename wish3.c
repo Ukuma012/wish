@@ -56,16 +56,16 @@ int main(int argc, char *argv[])
       }
       else if (rc == 0)
       {
-        // @Fix me command not foundが表示されない
-        char cmd[10];
+        char cmd[20];
         snprintf(cmd, sizeof(cmd), "/bin/%s", args[0]);
         if ((access(cmd, X_OK)) < 0)
         {
           snprintf(cmd, sizeof(cmd), "/usr/bin/%s", args[0]);
           if ((access(cmd, X_OK)) < 0)
           {
+            printf("%s", cmd);
             fprintf(stderr, "command not found\n");
-            exit(0);
+            exit(1);
           }
         }
 
