@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// @TODO access system call
 // @TODO redirection
 // @TODO promptの前にpathを表示する
 // @TODO GUI
