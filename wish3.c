@@ -2,8 +2,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <fcntl.h>
 
-// @TODO redirection
+#define default 0
+#define redirection 1
+
 // @TODO GUI
 // @TODO 処理を関数にまとめる
 // @TODO tab補完
@@ -27,6 +30,9 @@ int main(int argc, char *argv[])
     char *pathline;
     char cwd[256];
 
+    int type = default;
+    char *dst;
+
     if (getcwd(cwd, sizeof(cwd)) == NULL)
     {
       fprintf(stderr, "getcwd failed\n");
@@ -42,6 +48,7 @@ int main(int argc, char *argv[])
     printf("%s %s %s", patharg[j - 1], "%", "wish> ");
     if ((linelen = getline(&line, &linecap, stdin)) > 0)
     {
+
       // 末尾の改行を終端に変更
       char *p;
       p = strchr(line, '\n');
@@ -68,14 +75,28 @@ int main(int argc, char *argv[])
 
       if (strcmp(args[0], "cd") == 0)
       {
-        if(i > 2) {
+        if (i > 2)
+        {
           fprintf(stderr, "too many argument\n");
           continue;
         }
-        if(chdir(args[1]) < 0) {
+        if (chdir(args[1]) < 0)
+        {
           fprintf(stderr, "no such file of directory\n");
         }
         continue;
+      }
+
+      // parseして、forkするときに処理を変える
+      for (int h = 0; h < i; h++)
+      {
+        if (strcmp(args[h], ">") == 0)
+        {
+          type = redirection;
+          dst = args[h + 1];
+          args[h] = NULL;
+          continue;
+        }
       }
 
       int rc = fork();
@@ -98,13 +119,26 @@ int main(int argc, char *argv[])
           }
         }
 
-        if ((execv(cmd, args)) < 0)
+        if (type == default)
         {
-          printf("%s\n", args[0]);
-          fprintf(stderr, "execv failed\n");
-          exit(1);
+          if ((execv(cmd, args)) < 0)
+          {
+            printf("%s\n", args[0]);
+            fprintf(stderr, "execv failed\n");
+            exit(1);
+          }
+          exit(0);
+        } else if(type == redirection) {
+          close(STDOUT_FILENO);
+          open(dst, O_CREAT|O_WRONLY|O_TRUNC, S_IRWXU);
+          if ((execv(cmd, args)) < 0)
+          {
+            printf("%s\n", args[0]);
+            fprintf(stderr, "execv failed\n");
+            exit(1);
+          }
+          exit(0);
         }
-        exit(0);
       }
       else
       {
