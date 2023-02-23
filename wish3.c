@@ -7,11 +7,6 @@
 #define default 0
 #define redirection 1
 
-// @TODO GUI
-// @TODO 処理を関数にまとめる
-// @TODO tab補完
-// @TODO parallel command
-
 int main(int argc, char *argv[])
 {
   char *line = NULL;
