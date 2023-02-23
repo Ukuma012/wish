@@ -6,6 +6,7 @@
 // @TODO redirection
 // @TODO GUI
 // @TODO 処理を関数にまとめる
+// @TODO cd実装
 
 int main(int argc, char *argv[])
 {
