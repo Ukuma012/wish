@@ -66,6 +66,12 @@ int main(int argc, char *argv[])
         exit(0);
       }
 
+      if (strcmp(args[0], "cd") == 0)
+      {
+        printf("%s", "you hit cd!\n");
+        exit(0);
+      }
+
       int rc = fork();
       if (rc < 0)
       {
