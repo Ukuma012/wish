@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 
     int j = 0;
     char *path;
-    char *patharg[10];
+    char *patharg[256];
     char *pathline;
     char cwd[256];
 
