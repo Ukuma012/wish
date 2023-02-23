@@ -25,19 +25,21 @@ int main(int argc, char *argv[])
     char *path;
     char *patharg[10];
     char *pathline;
-    char cwd[256]; 
+    char cwd[256];
 
-    if(getcwd(cwd, sizeof(cwd)) == NULL) {
+    if (getcwd(cwd, sizeof(cwd)) == NULL)
+    {
       fprintf(stderr, "getcwd failed\n");
       exit(1);
     }
     pathline = cwd;
-    while((path = strsep(&pathline, "/")) != NULL) {
+    while ((path = strsep(&pathline, "/")) != NULL)
+    {
       patharg[j] = path;
       j++;
     }
 
-    printf("%s %s", patharg[j-1], " wish> ");
+    printf("%s %s", patharg[j - 1], " wish> ");
     if ((linelen = getline(&line, &linecap, stdin)) > 0)
     {
       // 末尾の改行を終端に変更
