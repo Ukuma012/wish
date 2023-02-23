@@ -6,7 +6,6 @@
 // @TODO redirection
 // @TODO GUI
 // @TODO 処理を関数にまとめる
-// @TODO cd実装
 
 int main(int argc, char *argv[])
 {
@@ -68,8 +67,14 @@ int main(int argc, char *argv[])
 
       if (strcmp(args[0], "cd") == 0)
       {
-        printf("%s", "you hit cd!\n");
-        exit(0);
+        if(i > 2) {
+          fprintf(stderr, "too many argument\n");
+          continue;
+        }
+        if(chdir(args[1]) < 0) {
+          fprintf(stderr, "no such file of directory\n");
+        }
+        continue;
       }
 
       int rc = fork();
