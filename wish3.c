@@ -4,7 +4,6 @@
 #include <string.h>
 
 // @TODO redirection
-// @TODO promptの前にpathを表示する
 // @TODO GUI
 // @TODO 処理を関数にまとめる
 
@@ -20,7 +19,24 @@ int main(int argc, char *argv[])
     char *args[10];
     char *string;
     int i = 0;
-    printf("%s", "wish> ");
+
+    int j = 0;
+    char *path;
+    char *patharg[10];
+    char *pathline;
+    char cwd[256]; 
+
+    if(getcwd(cwd, sizeof(cwd)) == NULL) {
+      fprintf(stderr, "getcwd failed\n");
+      exit(1);
+    }
+    pathline = cwd;
+    while((path = strsep(&pathline, "/")) != NULL) {
+      patharg[j] = path;
+      j++;
+    }
+
+    printf("%s %s", patharg[j-1], " wish> ");
     if ((linelen = getline(&line, &linecap, stdin)) > 0)
     {
       // 末尾の改行を終端に変更
