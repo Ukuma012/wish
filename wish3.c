@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
       j++;
     }
 
-    printf("%s %s", patharg[j - 1], " wish> ");
+    printf("%s %s %s", patharg[j - 1], "%", "wish> ");
     if ((linelen = getline(&line, &linecap, stdin)) > 0)
     {
       // 末尾の改行を終端に変更
